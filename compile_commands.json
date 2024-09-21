@@ -1,0 +1,56 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-fPIC",
+      "-Wall",
+      "-Wextra",
+      "-O3",
+      "-Wno-cpp",
+      "-Iincludes",
+      "-c",
+      "-o",
+      "obj/codegen.o",
+      "src/codegen.c"
+    ],
+    "directory": "/home/bonsthie/Documents/code/anika/SIMPL",
+    "file": "/home/bonsthie/Documents/code/anika/SIMPL/src/codegen.c",
+    "output": "/home/bonsthie/Documents/code/anika/SIMPL/obj/codegen.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-fPIC",
+      "-Wall",
+      "-Wextra",
+      "-O3",
+      "-Wno-cpp",
+      "-Iincludes",
+      "-c",
+      "-o",
+      "obj/function_avx.o",
+      "src/function_avx.c"
+    ],
+    "directory": "/home/bonsthie/Documents/code/anika/SIMPL",
+    "file": "/home/bonsthie/Documents/code/anika/SIMPL/src/function_avx.c",
+    "output": "/home/bonsthie/Documents/code/anika/SIMPL/obj/function_avx.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-fPIC",
+      "-Wall",
+      "-Wextra",
+      "-O3",
+      "-Wno-cpp",
+      "-Iincludes",
+      "-c",
+      "-o",
+      "obj/function_sse.o",
+      "src/function_sse.c"
+    ],
+    "directory": "/home/bonsthie/Documents/code/anika/SIMPL",
+    "file": "/home/bonsthie/Documents/code/anika/SIMPL/src/function_sse.c",
+    "output": "/home/bonsthie/Documents/code/anika/SIMPL/obj/function_sse.o"
+  }
+]
