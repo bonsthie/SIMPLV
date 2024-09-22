@@ -1,5 +1,5 @@
 # Compiler and flags
-CC = gcc
+CC = clang
 CFLAGS = -fPIC -Wall -Wextra -O3 -Wno-cpp -MMD -MP
 
 # Include directory
@@ -37,5 +37,7 @@ $(OBJ_DIR):
 # Clean target: remove all object files and the shared library
 clean:
 	rm -rf $(OBJ_DIR) $(LIBRARY)
+
+re: clean $(OBJ_DIR) all
 
 .PHONY: all clean

@@ -1,6 +1,6 @@
-#ifndef __TYPE_SSE_H__
+#ifndef __WARNING_TYPE_SSE_H__
 #warning "Please include simpl.h instead of directly including type_sse.h"
-#endif /* __TYPE_SSE_H__ */
+#endif /* __WARNING_TYPE_SSE_H__ */
 
 #ifndef __TYPE_SSE_H__
 #define __TYPE_SSE_H__

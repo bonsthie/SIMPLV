@@ -1,36 +1,37 @@
-#ifndef __FUNCTION_SSE_H__
+#ifndef __WARNING_FUNCTION_SSE_H__
 #warning "Please include simpl.h instead of directly including function_sse.h"
 #endif
 
 #ifndef __FUNCTION_SSE_H__
 #define __FUNCTION_SSE_H__
 
-#include <simpl.h>
+#define __SIMPL_TYPE_ONLY 1
+#include "../simpl.h"
 
-#ifndef __FORCE_INLINE
-#define __FORCE_INLINE __attribute__((__always_inline__, __nodebug__, __target__("avx,no-evex512"), \
-                 __min_vector_width__(256)))
+#ifndef __FUNC_ATTR_SSE
+#define __FUNC_ATTR_SSE __attribute__((__always_inline__, __nodebug__, __target__("sse"), \
+                 __min_vector_width__(128)))
 #endif
 
 #ifndef _FUNC_SSE
 #define _FUNC_SSE(x) __simpl_ ## x ## _sse
 #endif
 
-inline vec __FORCE_INLINE _FUNC_SSE(v32c_add)(vec __a, vec __b) {
+inline vec __FUNC_ATTR_SSE _FUNC_SSE(v32c_add)(vec __a, vec __b) {
   vec result;
   result.t_char.v128[0] = __a.t_char.v128[0] + __b.t_char.v128[0];
   result.t_char.v128[1] = __a.t_char.v128[1] + __b.t_char.v128[1];
   return result;
 }
 
-inline vec __FORCE_INLINE _FUNC_SSE(v32c_cmdeq)(vec __a, vec __b) {
+inline vec __FUNC_ATTR_SSE _FUNC_SSE(v32c_cmpeq)(vec __a, vec __b) {
   vec result;
   result.t_char.v128[0] = __a.t_char.v128[0] == __b.t_char.v128[0];
   result.t_char.v128[1] = __a.t_char.v128[1] == __b.t_char.v128[1];
   return result;
 }
 
-inline vec __FORCE_INLINE _FUNC_SSE(v256b_set_char)(
+inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set_char)(
     char __a, char __b, char __c, char __d, char __e, char __f, char __g,
     char __h, char __i, char __j, char __k, char __l, char __m, char __n,
     char __o, char __p, char __q, char __r, char __s, char __t, char __u,
@@ -46,7 +47,7 @@ inline vec __FORCE_INLINE _FUNC_SSE(v256b_set_char)(
   return result;
 }
 
-inline vec __FORCE_INLINE _FUNC_SSE(v256b_set1_char)(char __a) {
+inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set1_char)(char __a) {
   return (_FUNC_SSE(v256b_set_char)(__a, __a, __a, __a, __a, __a, __a, __a, __a,
                                     __a, __a, __a, __a, __a, __a, __a, __a, __a,
                                     __a, __a, __a, __a, __a, __a, __a, __a, __a,
@@ -54,13 +55,14 @@ inline vec __FORCE_INLINE _FUNC_SSE(v256b_set1_char)(char __a) {
 }
 
 #include <immintrin.h>
-inline int __FORCE_INLINE _FUNC_SSE(v32c_movemask)(vec __a)
+inline int __FUNC_ATTR_SSE _FUNC_SSE(v32c_movemask)(vec __a)
 {
-	return (_mm256_movemask_epi8((__m256i)__a.t_char.v256));
+	(void)__a;
+	return (0);
 }
 
 
-inline vec __FORCE_INLINE _FUNC_SSE(v256b_loadu)(const uvec *__p) {
+inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_loadu)(const uvec *__p) {
     struct __loadu_vec {
         vec __v;
     } __attribute__((__packed__, __may_alias__));
@@ -68,6 +70,6 @@ inline vec __FORCE_INLINE _FUNC_SSE(v256b_loadu)(const uvec *__p) {
     return ((const struct __loadu_vec *)__p)->__v;
 }
 
-#undef __FORCE_INLINE
+#undef __FUNC_ATTR_SSE
 
 #endif /* __FUNCTION_SSE_H__ */
