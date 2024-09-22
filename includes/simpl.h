@@ -139,9 +139,28 @@ typedef union vec {
   v32uc t_uchar;
 } vec;
 
+/* VEC unaligned definition */
+
+typedef union uvec {
+  uv4d t_double;
+  uv8f t_float;
+  uv4ll t_long_long;
+  uv8i t_int;
+  uv16s t_short;
+  uv32c t_char;
+  uv32sc t_signed_char;
+
+  uv4ull t_ulong_long;
+  uv8ui t_uint;
+  uv16us t_ushort;
+  uv32uc t_uchar;
+} uvec;
+
 #ifndef __SIMPL_TYPE_ONLY
 
 vec v32c_add(vec __a, vec __b);
+
+vec v32c_cmpeq(vec __a, vec __b);
 
 vec v256b_set_char(char __a, char __b, char __c, char __d, char __e, char __f,
                    char __g, char __h, char __i, char __j, char __k, char __l,
@@ -151,6 +170,10 @@ vec v256b_set_char(char __a, char __b, char __c, char __d, char __e, char __f,
                    char __dd, char __ee, char __ff);
 
 vec v256b_set1_char(char __a);
+
+int v32c_movemask(vec __a);
+
+vec v256b_loadu(const uvec *__p);
 
 #endif /* __SIMPL_TYPE_ONLY */
 

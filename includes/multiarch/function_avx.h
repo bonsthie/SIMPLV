@@ -8,7 +8,8 @@
 #include <simpl.h>
 
 #ifndef __FORCE_INLINE
-#define __FORCE_INLINE __attribute__((__always_inline__, __artificial__))
+#define __FORCE_INLINE __attribute__((__always_inline__, __nodebug__, __target__("avx2"), \
+                 __min_vector_width__(256)))
 #endif
 
 #ifndef _FUNC_AVX
@@ -18,6 +19,12 @@
 inline vec __FORCE_INLINE _FUNC_AVX(v32c_add)(vec __a, vec __b) {
   vec result;
   result.t_char.v256 = __a.t_char.v256 + __b.t_char.v256;
+  return result;
+}
+
+inline vec __FORCE_INLINE _FUNC_AVX(v32c_cmpeq)(vec __a, vec __b) {
+  vec result;
+  result.t_char.v256 = __a.t_char.v256 == __b.t_char.v256;
   return result;
 }
 
@@ -42,6 +49,20 @@ inline vec __FORCE_INLINE _FUNC_AVX(v256b_set1_char)(char __a) {
                                    __a, __a, __a, __a, __a, __a, __a, __a, __a,
                                    __a, __a, __a, __a, __a, __a, __a, __a, __a,
                                    __a, __a, __a, __a, __a));
+}
+
+#include <immintrin.h>
+inline int __FORCE_INLINE _FUNC_AVX(v32c_movemask)(vec __a)
+{
+	return (_mm256_movemask_epi8((__m256i)__a.t_char.v256));
+}
+
+inline vec __FORCE_INLINE _FUNC_AVX(v256b_loadu)(const uvec *__p) {
+    struct __loadu_vec {
+        vec __v;
+    } __attribute__((__packed__, __may_alias__));
+    
+    return ((const struct __loadu_vec *)__p)->__v;
 }
 
 #endif /* __FUNCTION_AVX_H__ */

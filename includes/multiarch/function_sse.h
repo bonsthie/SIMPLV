@@ -8,7 +8,8 @@
 #include <simpl.h>
 
 #ifndef __FORCE_INLINE
-#define __FORCE_INLINE __attribute__((__always_inline__, __artificial__))
+#define __FORCE_INLINE __attribute__((__always_inline__, __nodebug__, __target__("avx,no-evex512"), \
+                 __min_vector_width__(256)))
 #endif
 
 #ifndef _FUNC_SSE
@@ -19,6 +20,13 @@ inline vec __FORCE_INLINE _FUNC_SSE(v32c_add)(vec __a, vec __b) {
   vec result;
   result.t_char.v128[0] = __a.t_char.v128[0] + __b.t_char.v128[0];
   result.t_char.v128[1] = __a.t_char.v128[1] + __b.t_char.v128[1];
+  return result;
+}
+
+inline vec __FORCE_INLINE _FUNC_SSE(v32c_cmdeq)(vec __a, vec __b) {
+  vec result;
+  result.t_char.v128[0] = __a.t_char.v128[0] == __b.t_char.v128[0];
+  result.t_char.v128[1] = __a.t_char.v128[1] == __b.t_char.v128[1];
   return result;
 }
 
@@ -44,5 +52,22 @@ inline vec __FORCE_INLINE _FUNC_SSE(v256b_set1_char)(char __a) {
                                     __a, __a, __a, __a, __a, __a, __a, __a, __a,
                                     __a, __a, __a, __a, __a));
 }
+
+#include <immintrin.h>
+inline int __FORCE_INLINE _FUNC_SSE(v32c_movemask)(vec __a)
+{
+	return (_mm256_movemask_epi8((__m256i)__a.t_char.v256));
+}
+
+
+inline vec __FORCE_INLINE _FUNC_SSE(v256b_loadu)(const uvec *__p) {
+    struct __loadu_vec {
+        vec __v;
+    } __attribute__((__packed__, __may_alias__));
+    
+    return ((const struct __loadu_vec *)__p)->__v;
+}
+
+#undef __FORCE_INLINE
 
 #endif /* __FUNCTION_SSE_H__ */
