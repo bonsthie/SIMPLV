@@ -57,8 +57,7 @@ static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set1_char)(char __a) {
 #include <immintrin.h>
 static inline int __FUNC_ATTR_SSE _FUNC_SSE(v32c_movemask)(vec __a)
 {
-	(void)__a;
-	return (0);
+	return ((_mm_movemask_epi8((__m128i)__a.t_char.v128[1]) << 16) | _mm_movemask_epi8((__m128i)__a.t_char.v128[0]));
 }
 
 

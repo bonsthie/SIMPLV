@@ -161,6 +161,11 @@ typedef union uvec {
 
 #ifndef __SIMPL_TYPE_ONLY
 
+int simd = 0;
+void __attribute__((constructor)) __simd_suport(void) {
+	simd = __builtin_cpu_supports("avx");
+}
+
 #define __WARNING_FUNCTION_AVX_H__
 #include "multiarch/function_avx.h"
 #define __WARNING_FUNCTION_SSE_H__
@@ -205,11 +210,11 @@ typedef union uvec {
     }                                                                          \
   }
 
-simpl_func_init(v32c_add, 1, vec, (vec __a, vec __b), (__a, __b));
+simpl_func_init(v32c_add, simd, vec, (vec __a, vec __b), (__a, __b));
 
-simpl_func_init(v32c_cmpeq, 1, vec, (vec __a, vec __b), (__a, __b));
+simpl_func_init(v32c_cmpeq, simd, vec, (vec __a, vec __b), (__a, __b));
 
-simpl_func_init(v256b_set_char, 1, vec,
+simpl_func_init(v256b_set_char, simd, vec,
                 (char __a, char __b, char __c, char __d, char __e, char __f,
                  char __g, char __h, char __i, char __j, char __k, char __l,
                  char __m, char __n, char __o, char __p, char __q, char __r,
@@ -220,11 +225,11 @@ simpl_func_init(v256b_set_char, 1, vec,
                  __m, __n, __o, __p, __q, __r, __s, __t, __u, __v, __w, __x,
                  __y, __z, __aa, __bb, __cc, __dd, __ee, __ff));
 
-simpl_func_init(v256b_set1_char, 1, vec, (char __a), (__a));
+simpl_func_init(v256b_set1_char, simd, vec, (char __a), (__a));
 
-simpl_func_init(v32c_movemask, 1, int, (vec __a), (__a));
+simpl_func_init(v32c_movemask, simd, int, (vec __a), (__a));
 
-simpl_func_init(v256b_loadu, 1, vec, (const uvec *__a), (__a));
+simpl_func_init(v256b_loadu, simd, vec, (const uvec *__a), (__a));
 
 #endif /* __SIMPL_TYPE_ONLY */
 
