@@ -179,12 +179,30 @@ typedef union uvec {
     return func;                                                               \
   }
 
+#if defined(__AVX2__)
+#define __CASE_AVX(name, param_names)                                          \
+  case 1:                                                                      \
+    return (_FUNC_AVX(name) param_names);                                      \
+    break;
+#else
+#define __CASE_AVX(name, param_names)
+#endif
+
+#define __CASE_SSE(name, param_names)                                          \
+  default:                                                                     \
+    return (_FUNC_SSE(name) param_names);                                      \
+    break;
+
+#define __DUMMY_CASE_FUNC_INIT(name, return_type, param_types)
+
 #define simpl_func_init(name, index, return_type, param_types, param_names)    \
-  return_type(*name##_tab[2])                                                  \
-      param_types = {_FUNC_SSE(name), _FUNC_AVX(name)};                        \
-                                                                               \
-  extern inline __attribute__((always_inline)) return_type name param_types {  \
-    return name##_tab[index] param_names;                                      \
+  extern inline                                                                \
+      __attribute__((always_inline, __min_vector_width__(                      \
+                                        128))) return_type name param_types {  \
+    switch (index) {                                                           \
+      __CASE_AVX(name, param_names)                                            \
+      __CASE_SSE(name, param_names)                                            \
+    }                                                                          \
   }
 
 simpl_func_init(v32c_add, 1, vec, (vec __a, vec __b), (__a, __b));

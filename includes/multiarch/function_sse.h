@@ -17,21 +17,21 @@
 #define _FUNC_SSE(x) __simpl_ ## x ## _sse
 #endif
 
-inline vec __FUNC_ATTR_SSE _FUNC_SSE(v32c_add)(vec __a, vec __b) {
+static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v32c_add)(vec __a, vec __b) {
   vec result;
   result.t_char.v128[0] = __a.t_char.v128[0] + __b.t_char.v128[0];
   result.t_char.v128[1] = __a.t_char.v128[1] + __b.t_char.v128[1];
   return result;
 }
 
-inline vec __FUNC_ATTR_SSE _FUNC_SSE(v32c_cmpeq)(vec __a, vec __b) {
+static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v32c_cmpeq)(vec __a, vec __b) {
   vec result;
   result.t_char.v128[0] = __a.t_char.v128[0] == __b.t_char.v128[0];
   result.t_char.v128[1] = __a.t_char.v128[1] == __b.t_char.v128[1];
   return result;
 }
 
-inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set_char)(
+static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set_char)(
     char __a, char __b, char __c, char __d, char __e, char __f, char __g,
     char __h, char __i, char __j, char __k, char __l, char __m, char __n,
     char __o, char __p, char __q, char __r, char __s, char __t, char __u,
@@ -47,7 +47,7 @@ inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set_char)(
   return result;
 }
 
-inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set1_char)(char __a) {
+static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set1_char)(char __a) {
   return (_FUNC_SSE(v256b_set_char)(__a, __a, __a, __a, __a, __a, __a, __a, __a,
                                     __a, __a, __a, __a, __a, __a, __a, __a, __a,
                                     __a, __a, __a, __a, __a, __a, __a, __a, __a,
@@ -55,14 +55,14 @@ inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set1_char)(char __a) {
 }
 
 #include <immintrin.h>
-inline int __FUNC_ATTR_SSE _FUNC_SSE(v32c_movemask)(vec __a)
+static inline int __FUNC_ATTR_SSE _FUNC_SSE(v32c_movemask)(vec __a)
 {
 	(void)__a;
 	return (0);
 }
 
 
-inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_loadu)(const uvec *__p) {
+static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_loadu)(const uvec *__p) {
     struct __loadu_vec {
         vec __v;
     } __attribute__((__packed__, __may_alias__));
