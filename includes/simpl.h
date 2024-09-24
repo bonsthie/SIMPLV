@@ -163,7 +163,7 @@ typedef union uvec {
 
 int simd = 0;
 void __attribute__((constructor)) __simd_suport(void) {
-	simd = __builtin_cpu_supports("avx");
+  simd = __builtin_cpu_supports("avx");
 }
 
 #define __WARNING_FUNCTION_AVX_H__
@@ -173,20 +173,16 @@ void __attribute__((constructor)) __simd_suport(void) {
 
 #ifdef VERBOSE
 #include <stdio.h>
-#define IFUNC_LOG(func) printf("simpl ifunc %s is selected\n", #func);
+#define SIMPL_INTR_SELECTED_NAME(func, type)                                   \
+  printf("simpl intr %s %s is selected\n", #func, type);
 #else
-#define IFUNC_LOG(func)
+#define SIMPL_INTR_SELECTED_NAME(func, type)
 #endif
-
-#define _func_selected(func)                                                   \
-  {                                                                            \
-    IFUNC_LOG(func)                                                            \
-    return func;                                                               \
-  }
 
 #if defined(__AVX2__)
 #define __CASE_AVX(name, param_names)                                          \
   case 1:                                                                      \
+    SIMPL_INTR_SELECTED_NAME(name, "avx2")                                     \
     return (_FUNC_AVX(name) param_names);                                      \
     break;
 #else
@@ -195,6 +191,7 @@ void __attribute__((constructor)) __simd_suport(void) {
 
 #define __CASE_SSE(name, param_names)                                          \
   default:                                                                     \
+    SIMPL_INTR_SELECTED_NAME(name, "sse")                                      \
     return (_FUNC_SSE(name) param_names);                                      \
     break;
 
