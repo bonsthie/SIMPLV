@@ -1,5 +1,9 @@
-#ifndef __FUNCTION_H__
-#define __FUNCTION_H__
+#ifndef __WARNING_FUNCTION_VEC256_H__
+#warning "Please include simpl.h instead of directly including function_vec256.h"
+#endif
+
+#ifndef __FUNCTION_VEC256_H__
+#define __FUNCTION_VEC256_H__
 
 #define __SIMPL_TYPE_ONLY
 #include "../simpl.h"
@@ -34,22 +38,14 @@
   __attribute__((__always_inline__, __nodebug__, __target__(__SIMPL_TARGET),   \
                  __min_vector_width__(__SIMPL_VECTOR_SIZE)))
 
-/* doesn't works for now sorry... */
-/* #define __SIMPL_ATTR_WARNING(x, msg) __attribute__((__SIMPL_ALIAS(x),
- * __always_inline__, __nodebug__, __target__("avx2"),
- * __min_vector_width__(__SIMPL_VECTOR_SIZE), warning(msg))) */
-
-// v32c_add
 static inline __SIMPL_ATTR vec v32c_add(vec __a, vec __b) {
     return __SIMPL_FUNC(v32c_add)(__a, __b);
 }
 
-// v32c_cmpeq
 static inline __SIMPL_ATTR vec v32c_cmpeq(vec __a, vec __b) {
     return __SIMPL_FUNC(v32c_cmpeq)(__a, __b);
 }
 
-// v256b_set_char
 static inline __SIMPL_ATTR vec v256b_set_char(
     char __a, char __b, char __c, char __d, char __e, char __f, char __g,
     char __h, char __i, char __j, char __k, char __l, char __m, char __n,
@@ -63,19 +59,16 @@ static inline __SIMPL_ATTR vec v256b_set_char(
                                         __ee, __ff);
 }
 
-// v256b_set1_char
 static inline __SIMPL_ATTR vec v256b_set1_char(char __a) {
     return __SIMPL_FUNC(v256b_set1_char)(__a);
 }
 
-// v32c_movemask
 static inline __SIMPL_ATTR int v32c_movemask(vec __a) {
     return __SIMPL_FUNC(v32c_movemask)(__a);
 }
 
-// v256b_loadu
 static inline __SIMPL_ATTR vec v256b_loadu(const uvec *__p) {
     return __SIMPL_FUNC(v256b_loadu)(__p);
 }
 
-#endif /* __FUNCTION_H__ */
+#endif /* __FUNCTION_VEC256_H__ */

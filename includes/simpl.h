@@ -9,7 +9,23 @@
 
 /* Aligned types (default) */
 
+
 /* Normal type */
+
+typedef __v2d v2d;
+
+typedef __v4f v4f;
+
+typedef __v2ll v2ll;
+
+typedef __v4i v4i;
+
+typedef __v8s v8s;
+
+typedef __v16c v16c;
+
+typedef __v16sc v16sc;
+
 typedef union v4d {
   __v4d v256;
   __v2d v128[2];
@@ -45,7 +61,16 @@ typedef union v32sc {
   __v16sc v128[2];
 } v32sc;
 
-/* Unaligned types */
+/* Unsigned types */
+
+typedef __v2ull v2ull;
+
+typedef __v4ui v4ui;
+
+typedef __v8us v8us;
+
+typedef __v16uc v16uc;
+
 typedef union v4ull {
   __v4ull v256;
   __v2ull v128[2];
@@ -68,7 +93,20 @@ typedef union v32uc {
 
 /* Unaligned types */
 
-/* Normal type */
+typedef __uv2d uv2d;
+
+typedef __uv4f uv4f;
+
+typedef __uv2ll uv2ll;
+
+typedef __uv4i uv4i;
+
+typedef __uv8s uv8s;
+
+typedef __uv16c uv16c;
+
+typedef __uv16sc uv16sc;
+
 typedef union uv4d {
   __uv4d uv256;
   __uv2d uv128[2];
@@ -104,7 +142,16 @@ typedef union uv32sc {
   __uv16sc uv128[2];
 } uv32sc;
 
-/* Unaligned types */
+/* Unsigned types */
+
+typedef __uv2ull uv2ull;
+
+typedef __uv4ui uv4ui;
+
+typedef __uv8us uv8us;
+
+typedef __uv16uc uv16uc;
+
 typedef union uv4ull {
   __uv4ull uv256;
   __uv2ull uv128[2];
@@ -129,16 +176,18 @@ typedef union uv32uc {
 
 typedef union vec {
   v4d t_double;
-  v8f t_float;
   v4ll t_long_long;
-  v8i t_int;
-  v16s t_short;
-  v32c t_char;
-  v32sc t_signed_char;
-
   v4ull t_ulong_long;
+
+  v8f t_float;
+  v8i t_int;
   v8ui t_uint;
+
+  v16s t_short;
   v16us t_ushort;
+
+  v32c t_char;
+  v32sc t_schar;
   v32uc t_uchar;
 } vec;
 
@@ -151,7 +200,7 @@ typedef union uvec {
   uv8i t_int;
   uv16s t_short;
   uv32c t_char;
-  uv32sc t_signed_char;
+  uv32sc t_schar;
 
   uv4ull t_ulong_long;
   uv8ui t_uint;
@@ -159,10 +208,45 @@ typedef union uvec {
   uv32uc t_uchar;
 } uvec;
 
+/* VEC definition */
+
+typedef union vec128 {
+  v2d t_double;
+  v4f t_float;
+  v2ll t_long_long;
+  v4i t_int;
+  v8s t_short;
+  v16c t_char;
+  v16sc t_schar;
+
+  v2ull t_ulong_long;
+  v4ui t_uint;
+  v8us t_ushort;
+  v16uc t_uchar;
+} vec128;
+
+/* VEC unaligned definition */
+
+typedef union uvec128 {
+  uv2d t_double;
+  uv4f t_float;
+  uv2ll t_long_long;
+  uv4i t_int;
+  uv8s t_short;
+  uv16c t_char;
+  uv16sc t_schar;
+
+  uv2ull t_ulong_long;
+  uv4ui t_uint;
+  uv8us t_ushort;
+  uv16uc t_uchar;
+} uvec128;
+
 #ifndef __SIMPL_TYPE_ONLY
 
 // real definition of all funciton
-#include "multiarch/function.h"
+#define __WARNING_FUNCTION_VEC256_H__
+#include "multiarch/function_vec256.h"
 
 vec v32c_add(vec __a, vec __b);
 
@@ -180,6 +264,56 @@ vec v256b_set1_char(char __a);
 int v32c_movemask(vec __a);
 
 vec v256b_loadu(const uvec *__p);
+
+static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v32c_cmpeq)(vec __a, vec __b) {
+  vec result;
+  result.t_char.v128[0] = __a.t_char.v128[0] == __b.t_char.v128[0];
+  result.t_char.v128[1] = __a.t_char.v128[1] == __b.t_char.v128[1];
+  return result;
+}
+
+static inline vec128 __FUNC_ATTR_SSE _FUNC_SSE(v16c_cmpeq)(vec128 __a, vec128 __b) {
+  vec128 result;
+  result.t_char = __a.t_char / __b.t_char;
+  return result;
+}
+
+static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set_char)(
+    char __a, char __b, char __c, char __d, char __e, char __f, char __g,
+    char __h, char __i, char __j, char __k, char __l, char __m, char __n,
+    char __o, char __p, char __q, char __r, char __s, char __t, char __u,
+    char __v, char __w, char __x, char __y, char __z, char __aa, char __bb,
+    char __cc, char __dd, char __ee, char __ff) {
+  vec result;
+
+  result.t_char.v128[0] = (__v16c){__a, __b, __c, __d, __e, __f, __g, __h,
+                                   __i, __j, __k, __l, __m, __n, __o, __p};
+  result.t_char.v128[1] =
+      (__v16c){__q, __r, __s,  __t,  __u,  __v,  __w,  __x,
+               __y, __z, __aa, __bb, __cc, __dd, __ee, __ff};
+  return result;
+}
+
+static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_set1_char)(char __a) {
+  return (_FUNC_SSE(v256b_set_char)(__a, __a, __a, __a, __a, __a, __a, __a, __a,
+                                    __a, __a, __a, __a, __a, __a, __a, __a, __a,
+                                    __a, __a, __a, __a, __a, __a, __a, __a, __a,
+                                    __a, __a, __a, __a, __a));
+}
+
+#include <immintrin.h>
+static inline int __FUNC_ATTR_SSE _FUNC_SSE(v32c_movemask)(vec __a) {
+  return ((_mm_movemask_epi8((__m128i)__a.t_char.v128[1]) << 16) |
+          _mm_movemask_epi8((__m128i)__a.t_char.v128[0]));
+}
+
+static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_loadu)(const uvec *__p) {
+  struct __loadu_vec {
+    vec __v;
+  } __attribute__((__packed__, __may_alias__));
+
+  return ((const struct __loadu_vec *)__p)->__v;
+}
 
 #endif /* __SIMPL_TYPE_ONLY */
 
