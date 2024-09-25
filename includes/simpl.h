@@ -161,72 +161,54 @@ typedef union uvec {
 
 #ifndef __SIMPL_TYPE_ONLY
 
-int simd = 0;
-void __attribute__((constructor)) __simd_suport(void) {
-  simd = __builtin_cpu_supports("avx");
-}
-
 #define __WARNING_FUNCTION_AVX_H__
 #include "multiarch/function_avx.h"
 #define __WARNING_FUNCTION_SSE_H__
 #include "multiarch/function_sse.h"
 
-#ifdef VERBOSE
-#include <stdio.h>
-#define SIMPL_INTR_SELECTED_NAME(func, type)                                   \
-  printf("simpl intr %s %s is selected\n", #func, type);
+#define __STRINGIFY(x) #x
+#define __EXPAND_TO_STRINGIFY(x) __STRINGIFY(x)
+
+#if defined(SIMPL_USE_AVX) && defined(__AVX2__)
+#	define __SIMPL_ALIAS(x) alias(__EXPAND_TO_STRINGIFY(_FUNC_AVX(x)))
+#	define __SIMPL_VECTOR_SIZE 256
+#	define __SIMPL_TARGET "avx2"
+#elif defined(SIMPL_USE_SSE) && defined(__SSE__)
+#	define __SIMPL_ALIAS(x) alias(__EXPAND_TO_STRINGIFY(_FUNC_SSE(x)))
+#	define __SIMPL_VECTOR_SIZE 128
+#	define __SIMPL_TARGET "sse"
 #else
-#define SIMPL_INTR_SELECTED_NAME(func, type)
+#	define __SIMPL_ALIAS(x) alias(__EXPAND_TO_STRINGIFY(_FUNC_AVX(x)))
+#	define __SIMPL_VECTOR_SIZE 256
+#	define __SIMPL_TARGET "avx2"
 #endif
 
-#if defined(__AVX2__)
-#define __CASE_AVX(name, param_names)                                          \
-  case 1:                                                                      \
-    SIMPL_INTR_SELECTED_NAME(name, "avx2")                                     \
-    return (_FUNC_AVX(name) param_names);                                      \
-    break;
-#else
-#define __CASE_AVX(name, param_names)
-#endif
+#define __SIMPL_ATTR(x)                                                        \
+  __attribute__((__SIMPL_ALIAS(x), __always_inline__, __nodebug__,             \
+                 __target__("avx2"),                                           \
+                 __min_vector_width__(__SIMPL_VECTOR_SIZE)))
 
-#define __CASE_SSE(name, param_names)                                          \
-  default:                                                                     \
-    SIMPL_INTR_SELECTED_NAME(name, "sse")                                      \
-    return (_FUNC_SSE(name) param_names);                                      \
-    break;
+/* doesn't works for now sorry... */
+/* #define __SIMPL_ATTR_WARNING(x, msg) __attribute__((__SIMPL_ALIAS(x),
+ * __always_inline__, __nodebug__, __target__("avx2"),
+ * __min_vector_width__(__SIMPL_VECTOR_SIZE), warning(msg))) */
 
-#define __DUMMY_CASE_FUNC_INIT(name, return_type, param_types)
+static inline vec v32c_add(vec __a, vec __b) __SIMPL_ATTR(v32c_add);
 
-#define simpl_func_init(name, index, return_type, param_types, param_names)    \
-  extern inline                                                                \
-      __attribute__((always_inline, __min_vector_width__(                      \
-                                        128))) return_type name param_types {  \
-    switch (index) {                                                           \
-      __CASE_AVX(name, param_names)                                            \
-      __CASE_SSE(name, param_names)                                            \
-    }                                                                          \
-  }
+static inline vec v32c_cmpeq(vec __a, vec __b) __SIMPL_ATTR(v32c_cmpeq);
 
-simpl_func_init(v32c_add, simd, vec, (vec __a, vec __b), (__a, __b));
+static inline vec v256b_set_char(char __a, char __b, char __c, char __d, char __e, char __f,
+                   char __g, char __h, char __i, char __j, char __k, char __l,
+                   char __m, char __n, char __o, char __p, char __q, char __r,
+                   char __s, char __t, char __u, char __v, char __w, char __x,
+                   char __y, char __z, char __aa, char __bb, char __cc,
+                   char __dd, char __ee, char __ff) __SIMPL_ATTR(v256b_set_char);
 
-simpl_func_init(v32c_cmpeq, simd, vec, (vec __a, vec __b), (__a, __b));
+static inline vec v256b_set1_char(char __a) __SIMPL_ATTR(v256b_set1_char);
 
-simpl_func_init(v256b_set_char, simd, vec,
-                (char __a, char __b, char __c, char __d, char __e, char __f,
-                 char __g, char __h, char __i, char __j, char __k, char __l,
-                 char __m, char __n, char __o, char __p, char __q, char __r,
-                 char __s, char __t, char __u, char __v, char __w, char __x,
-                 char __y, char __z, char __aa, char __bb, char __cc, char __dd,
-                 char __ee, char __ff),
-                (__a, __b, __c, __d, __e, __f, __g, __h, __i, __j, __k, __l,
-                 __m, __n, __o, __p, __q, __r, __s, __t, __u, __v, __w, __x,
-                 __y, __z, __aa, __bb, __cc, __dd, __ee, __ff));
+static inline int v32c_movemask(vec __a) __SIMPL_ATTR(v32c_movemask);
 
-simpl_func_init(v256b_set1_char, simd, vec, (char __a), (__a));
-
-simpl_func_init(v32c_movemask, simd, int, (vec __a), (__a));
-
-simpl_func_init(v256b_loadu, simd, vec, (const uvec *__a), (__a));
+static inline vec v256b_loadu(const uvec *__p) __SIMPL_ATTR(v256b_loadu);
 
 #endif /* __SIMPL_TYPE_ONLY */
 
