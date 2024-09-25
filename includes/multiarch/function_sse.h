@@ -5,8 +5,9 @@
 #ifndef __FUNCTION_SSE_H__
 #define __FUNCTION_SSE_H__
 
-#define __SIMPL_TYPE_ONLY 1
+#define __SIMPL_TYPE_ONLY
 #include "../simpl.h"
+#undef __SIMPL_TYPE_ONLY
 
 #ifndef __FUNC_ATTR_SSE
 #define __FUNC_ATTR_SSE __attribute__((__always_inline__, __nodebug__, __target__("sse"), \
@@ -70,5 +71,6 @@ static inline vec __FUNC_ATTR_SSE _FUNC_SSE(v256b_loadu)(const uvec *__p) {
 }
 
 #undef __FUNC_ATTR_SSE
+#undef __SIMPL_TYPE_ONLY
 
 #endif /* __FUNCTION_SSE_H__ */

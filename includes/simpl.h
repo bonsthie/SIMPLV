@@ -161,54 +161,25 @@ typedef union uvec {
 
 #ifndef __SIMPL_TYPE_ONLY
 
-#define __WARNING_FUNCTION_AVX_H__
-#include "multiarch/function_avx.h"
-#define __WARNING_FUNCTION_SSE_H__
-#include "multiarch/function_sse.h"
+// real definition of all funciton
+#include "multiarch/function.h"
 
-#define __STRINGIFY(x) #x
-#define __EXPAND_TO_STRINGIFY(x) __STRINGIFY(x)
+vec v32c_add(vec __a, vec __b);
 
-#if defined(SIMPL_USE_AVX) && defined(__AVX2__)
-#	define __SIMPL_ALIAS(x) alias(__EXPAND_TO_STRINGIFY(_FUNC_AVX(x)))
-#	define __SIMPL_VECTOR_SIZE 256
-#	define __SIMPL_TARGET "avx2"
-#elif defined(SIMPL_USE_SSE) && defined(__SSE__)
-#	define __SIMPL_ALIAS(x) alias(__EXPAND_TO_STRINGIFY(_FUNC_SSE(x)))
-#	define __SIMPL_VECTOR_SIZE 128
-#	define __SIMPL_TARGET "sse"
-#else
-#	define __SIMPL_ALIAS(x) alias(__EXPAND_TO_STRINGIFY(_FUNC_AVX(x)))
-#	define __SIMPL_VECTOR_SIZE 256
-#	define __SIMPL_TARGET "avx2"
-#endif
+vec v32c_cmpeq(vec __a, vec __b);
 
-#define __SIMPL_ATTR(x)                                                        \
-  __attribute__((__SIMPL_ALIAS(x), __always_inline__, __nodebug__,             \
-                 __target__("avx2"),                                           \
-                 __min_vector_width__(__SIMPL_VECTOR_SIZE)))
+vec v256b_set_char(char __a, char __b, char __c, char __d, char __e, char __f,
+                          char __g, char __h, char __i, char __j, char __k, char __l,
+                          char __m, char __n, char __o, char __p, char __q, char __r,
+                          char __s, char __t, char __u, char __v, char __w, char __x,
+                          char __y, char __z, char __aa, char __bb, char __cc, 
+                          char __dd, char __ee, char __ff);
 
-/* doesn't works for now sorry... */
-/* #define __SIMPL_ATTR_WARNING(x, msg) __attribute__((__SIMPL_ALIAS(x),
- * __always_inline__, __nodebug__, __target__("avx2"),
- * __min_vector_width__(__SIMPL_VECTOR_SIZE), warning(msg))) */
+vec v256b_set1_char(char __a);
 
-static inline vec v32c_add(vec __a, vec __b) __SIMPL_ATTR(v32c_add);
+int v32c_movemask(vec __a);
 
-static inline vec v32c_cmpeq(vec __a, vec __b) __SIMPL_ATTR(v32c_cmpeq);
-
-static inline vec v256b_set_char(char __a, char __b, char __c, char __d, char __e, char __f,
-                   char __g, char __h, char __i, char __j, char __k, char __l,
-                   char __m, char __n, char __o, char __p, char __q, char __r,
-                   char __s, char __t, char __u, char __v, char __w, char __x,
-                   char __y, char __z, char __aa, char __bb, char __cc,
-                   char __dd, char __ee, char __ff) __SIMPL_ATTR(v256b_set_char);
-
-static inline vec v256b_set1_char(char __a) __SIMPL_ATTR(v256b_set1_char);
-
-static inline int v32c_movemask(vec __a) __SIMPL_ATTR(v32c_movemask);
-
-static inline vec v256b_loadu(const uvec *__p) __SIMPL_ATTR(v256b_loadu);
+vec v256b_loadu(const uvec *__p);
 
 #endif /* __SIMPL_TYPE_ONLY */
 

@@ -1,14 +1,16 @@
-#include "includes/simpl.h"
 #include <string.h>
 #include <time.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <immintrin.h>
 
 #define VEC_SIZE 32
 
+#define SIMPL_USE_SSE
+#include "includes/simpl.h"
 size_t _strlen_vec(const char *s) 
 {
-	__m256i test;
     const char		*ptr = s;
     vec				zero = v256b_set1_char(0);
     size_t			offset = (uintptr_t)ptr & (VEC_SIZE - 1);
@@ -36,6 +38,7 @@ size_t _strlen_vec(const char *s)
         }
         ptr += VEC_SIZE;
     }
+	_mm256_zeroupper();
 
     return 0;
 }
