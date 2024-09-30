@@ -43,6 +43,6 @@ Supported Architectures
 Contributions are welcome! Feel free to open issues or submit pull requests to help improve the project. All contributions should align with the goal of making SIMD programming easier and more accessible.
 
 ## License
-**SIMPLV** is licensed under the GPL 2.0 License. See the [LICENSE](./LICENSE) file for details.
+**SIMPLV** is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
 @at0m741 and @Bonsthie
