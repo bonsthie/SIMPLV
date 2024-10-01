@@ -5,9 +5,9 @@
 #ifndef __FUNCTION_AVX_H__
 #define __FUNCTION_AVX_H__
 
-#define __SIMPL_TYPE_ONLY
+#define __SIMPLV_TYPE_ONLY
 #include "../simpl.h"
-#undef __SIMPL_TYPE_ONLY
+#undef __SIMPLV_TYPE_ONLY
 
 #ifndef __FUNC_ATTR_AVX2
 #define __FUNC_ATTR_AVX2 __attribute__((__always_inline__, __nodebug__, __target__("avx2"), __min_vector_width__(256)))
@@ -66,6 +66,6 @@ static inline vec __FUNC_ATTR_AVX2 _FUNC_AVX(v256b_loadu)(const uvec *__p) {
     return ((const struct __loadu_vec *)__p)->__v;
 }
 
-#undef __SIMPL_TYPE_ONLY
+#undef __SIMPLV_TYPE_ONLY
 
 #endif /* __FUNCTION_AVX_H__ */

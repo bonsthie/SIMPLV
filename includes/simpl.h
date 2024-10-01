@@ -1,5 +1,5 @@
-#ifndef __SIMPL_H__
-#define __SIMPL_H__
+#ifndef __SIMPLV_H__
+#define __SIMPLV_H__
 
 #include <sys/cdefs.h>
 #define __WARNING_TYPE_AVX_H__
@@ -242,7 +242,7 @@ typedef union uvec128 {
   uv16uc t_uchar;
 } uvec128;
 
-#ifndef __SIMPL_TYPE_ONLY
+#ifndef __SIMPLV_TYPE_ONLY
 
 // real definition of all funciton
 #define __WARNING_FUNCTION_VEC256_H__
@@ -265,6 +265,6 @@ int v32c_movemask(vec __a);
 
 vec v256b_loadu(const uvec *__p);
 
-#endif /* __SIMPL_TYPE_ONLY */
+#endif /* __SIMPLV_TYPE_ONLY */
 
-#endif /* __SIMPL_H__ */
+#endif /* __SIMPLV_H__ */

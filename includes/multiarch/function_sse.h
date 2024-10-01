@@ -5,9 +5,9 @@
 #ifndef __FUNCTION_SSE_H__
 #define __FUNCTION_SSE_H__
 
-#define __SIMPL_TYPE_ONLY
+#define __SIMPLV_TYPE_ONLY
 #include "../simpl.h"
-#undef __SIMPL_TYPE_ONLY
+#undef __SIMPLV_TYPE_ONLY
 
 #ifndef __FUNC_ATTR_SSE
 #define __FUNC_ATTR_SSE                                                        \
@@ -1344,6 +1344,6 @@ static inline vec128 __FUNC_ATTR_SSE _FUNC_SSE(v2ull_cmplt)(vec128 __a, vec128 _
 /* -------- end header ------ */
 
 #undef __FUNC_ATTR_SSE
-#undef __SIMPL_TYPE_ONLY
+#undef __SIMPLV_TYPE_ONLY
 
 #endif /* __FUNCTION_SSE_H__ */

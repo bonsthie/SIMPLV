@@ -48,7 +48,7 @@ size_t _strlen_sse(const char *s)
 	}
 }
 
-#define SIMPL_USE_SSE
+#define SIMPLV_USE_SSE
 #include "includes/simpl.h"
 
 size_t _strlen_vec(const char *s)  
