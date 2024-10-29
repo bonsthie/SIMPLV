@@ -119,7 +119,6 @@ size_t _strlen_vec(const char *s)
 /*     return 0; */
 /* } */
 
-
 int main(void)
 {
 	size_t iterations = 100;
