@@ -14,7 +14,7 @@
 To include SIMPLV in your project, simply clone the repository and add it to your build system:
 
 ``` bash
-git clone https://github.com/your-username/simplv.git
+git clone https://github.com/bonsthie/simplv.git
 ```
 
 Ensure that the necessary flags for your compiler are enabled to support AVX, SSE, or NEON, depending on the target architecture.
